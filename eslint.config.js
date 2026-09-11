@@ -39,5 +39,13 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
     },
+    rules: {
+      // Keep the public TypeScript style consistent and make type-only dependencies obvious.
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "separate-type-imports" },
+      ],
+      "@typescript-eslint/explicit-module-boundary-types": "error",
+    },
   },
 ];
