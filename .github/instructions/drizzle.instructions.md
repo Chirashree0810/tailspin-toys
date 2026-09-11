@@ -18,6 +18,13 @@ The app's data lives in a local SQLite database accessed through **Drizzle ORM**
 - `src/lib/db.ts` — `createDatabase(url)` / `getDatabase()` build the Drizzle client from `DATABASE_URL` (defaults to the local `tailspin.db` file).
 - `src/lib/games.ts` — typed, **injectable-db** data-access helpers used by pages and tests.
 
+## Comments and TSDoc
+
+- Comments explain intent, invariants, constraints, or a non-obvious trade-off. Do not use comments to paraphrase the SQL, TypeScript, or control flow immediately below them.
+- Treat stale comments as bugs: update or remove them whenever the related data-layer code changes.
+- Every exported function in `db/` and `src/lib/` must have a TSDoc/JSDoc block describing its purpose, each parameter, and its return value. This includes the injectable `db` argument on data-access helpers so the production and in-memory testing paths remain explicit.
+- Exported tables, types, and constants do not need boilerplate comments when their names and types make the contract clear; document non-obvious schema or transform decisions.
+
 ## Schema Conventions
 
 - Use `sqliteTable` with explicit column names (`text`, `integer`, `real`).
@@ -54,6 +61,7 @@ export async function getAllGameIds(db: Database): Promise<number[]> {
 - Always `order by` a stable column (title) so static builds are deterministic.
 - Map raw rows to the app-facing `Game`/`Publisher`/`Category` types in one place; don't leak Drizzle row shapes into components.
 - Keep ordering/lookup logic in `games.ts`, not in pages.
+- Use explicit parameter and return types on exported helpers. Keep type-only imports marked with `import type`; ESLint enforces this convention.
 
 ## Determinism
 
